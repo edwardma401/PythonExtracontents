@@ -7,6 +7,7 @@ First = []
 Last = []
 Emp = []
 DOB = []
+lastdigit = []
 with open (csv_path) as reading_obj:
     csv_reader = csv.reader(reading_obj)
     next(csv_reader)
@@ -14,19 +15,18 @@ with open (csv_path) as reading_obj:
         index = row[1].find(" ")
         First_Name = row[1][: index]
         First.append(First_Name)
-        Last_Name = row[1][-index :]
+        Last_Name = row[1][index :]
         Last.append(Last_Name)
         emp = row[0]
         Emp.append(emp)
         dob = row[2]
         DOB.append(dob)
-
+        ssn = row[3][7:]
+        lastdigit.append(ssn)
+# DOB
 year = [i.split('-')[0] for i in DOB]
-# print(year)
 month = [i.split('-')[1] for i in DOB]
-# print(month)
 days = [i.split('-')[2] for i in DOB]
-# print(days)
 mdy = []
 qcount = 0
 for i in year:
@@ -35,14 +35,25 @@ for i in year:
     qcount += 1
     if qcount == len(year):
         break
-# print(mdy)
+#SSN
+SSN = []
+acount = 0
+for i in lastdigit:
+    j = "***-**-" + str(lastdigit[acount])
+    SSN.append(j)
+    acount += 1
+    if acount == len(lastdigit):
+        break
+#States
 
+# Create New CSV file to apply the new format of existing CSV file
 with open ("csvpractice1.csv", 'w', newline='') as practicefile:
-    thiswriter = csv.DictWriter(practicefile, ["EMP ID", "First Name", "Last Name", "DOB"])
+    thiswriter = csv.DictWriter(practicefile, ["EMP ID", "First Name", "Last Name", "DOB", "SSN"])
     thiswriter.writeheader()
     rcount = 0
     for row in First:
-        thiswriter.writerow({"EMP ID": Emp[rcount], "First Name": First[rcount], "Last Name": Last[rcount], "DOB": mdy[rcount]})
+        thiswriter.writerow({"EMP ID": Emp[rcount], "First Name": First[rcount], "Last Name": Last[rcount], "DOB": mdy[rcount], "SSN":SSN[rcount]})
         rcount += 1
         if rcount == len(First):
             break
+
