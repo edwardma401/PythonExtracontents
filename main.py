@@ -68,7 +68,7 @@ for i in stateslist:
 # print(newstateslist)
 
 # Create New CSV file to apply the new format of existing CSV file
-with open ("csvpractice1.csv", 'w', newline='') as practicefile:
+with open ("Result/csvpractice1.csv", 'w', newline='') as practicefile:
     thiswriter = csv.DictWriter(practicefile, ["EMP ID", "First Name", "Last Name", "DOB", "SSN", "States"])
     thiswriter.writeheader()
     rcount = 0
