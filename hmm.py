@@ -8,6 +8,7 @@ Last = []
 Emp = []
 DOB = []
 lastdigit = []
+stateslist = []
 with open (csv_path) as reading_obj:
     csv_reader = csv.reader(reading_obj)
     next(csv_reader)
@@ -23,6 +24,9 @@ with open (csv_path) as reading_obj:
         DOB.append(dob)
         ssn = row[3][7:]
         lastdigit.append(ssn)
+        states = row[4]
+        stateslist.append(states)
+
 # DOB
 year = [i.split('-')[0] for i in DOB]
 month = [i.split('-')[1] for i in DOB]
@@ -45,14 +49,31 @@ for i in lastdigit:
     if acount == len(lastdigit):
         break
 #States
+# stateslist is a list variable that could be the key for the dictionary i am going to import from
+# another python file.
+
+from us_state_abbrev import us_state_abbrev as statesdict
+# print(statesdict)
+# successfully called a dictionary from another python file.
+# Now, I need to make my list variable to be recognized as the key of the 'statesdict, and return
+# the key's paired value as the list.
+tcount = 0
+newstateslist = []
+for i in stateslist:
+    abbrev = statesdict[stateslist[tcount]] # assigned new variable, which is the value of the key of called dictionary.
+    newstateslist.append(abbrev)
+    tcount += 1
+    if tcount == len(stateslist):
+        break
+# print(newstateslist)
 
 # Create New CSV file to apply the new format of existing CSV file
 with open ("csvpractice1.csv", 'w', newline='') as practicefile:
-    thiswriter = csv.DictWriter(practicefile, ["EMP ID", "First Name", "Last Name", "DOB", "SSN"])
+    thiswriter = csv.DictWriter(practicefile, ["EMP ID", "First Name", "Last Name", "DOB", "SSN", "States"])
     thiswriter.writeheader()
     rcount = 0
     for row in First:
-        thiswriter.writerow({"EMP ID": Emp[rcount], "First Name": First[rcount], "Last Name": Last[rcount], "DOB": mdy[rcount], "SSN":SSN[rcount]})
+        thiswriter.writerow({"EMP ID": Emp[rcount], "First Name": First[rcount], "Last Name": Last[rcount], "DOB": mdy[rcount], "SSN":SSN[rcount], "States": newstateslist[rcount]})
         rcount += 1
         if rcount == len(First):
             break
